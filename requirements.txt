@@ -1,0 +1,21 @@
+# Flexible lower-bound pins so pip picks wheels compatible with your Python
+# version (tested on 3.11-3.14). If a fresh Python (e.g. 3.14) can't find a
+# wheel for one line, upgrade pip first:  python -m pip install --upgrade pip
+
+# ---- Core image processing (Members 1-4, 7, 8) ----
+opencv-python>=4.10          # perspective transform, thresholding, morphology, template matching
+numpy>=2.1                   # array maths (>=2.1 has wheels for Python 3.13/3.14)
+Pillow>=10.4                 # synthetic sheet generation + image IO
+scikit-image>=0.24           # SSIM structural similarity (forgery check, Member 7)
+
+# ---- Data handling ----
+pandas>=2.2                  # tabular data feeding all visualizations
+
+# ---- Visualization (Members 1-7) ----
+matplotlib>=3.9              # bar, line, pie, heatmap, histogram, box, scatter, radar
+plotly>=5.24                 # interactive gauge chart (Member 5, infovis.py)
+
+# ---- Dashboard (Member 8) ----
+streamlit>=1.38             # main dashboard integrating every chart
+
+# XML parsing (Member 5) uses stdlib xml.etree; SQLite (Member 6) uses stdlib sqlite3.

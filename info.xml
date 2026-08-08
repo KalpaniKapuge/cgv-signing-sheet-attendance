@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  info.xml : machine-readable description of the signing sheets.
+  Member 5 parses this to know which student sits on which table row and to map
+  the local index (001..006 used by infovis.py) to a full student number.
+  The <subject> block feeds the Subject_Info table (Member 6).
+  Each <session> corresponds to one physical sheet / one lecture date.
+-->
+<signingSheet>
+
+  <subject>
+    <code>CS402_3</code>
+    <name>Computer Graphics and Visualization</name>
+    <programme>BSc (Hons) in Software Engineering - 2016.1</programme>
+    <faculty>School of Computing</faculty>
+    <university>NSBM Green University Town</university>
+    <lecturer>Dr. Rasika Ranaweera</lecturer>
+  </subject>
+
+  <students>
+    <student id="001" row="1" indexNo="10000409" title="Ms" name="M S Dilshanika Perera"/>
+    <student id="002" row="2" indexNo="10009301" title="Mr" name="C W M A Shehan Abeyrathne"/>
+    <student id="003" row="3" indexNo="10009302" title="Mr" name="B A K M Chithrananda"/>
+    <student id="004" row="4" indexNo="10009303" title="Ms" name="W Shashini Minosha De Silva"/>
+    <student id="005" row="5" indexNo="10009304" title="Mr" name="K L Udara Maduranga Liyanage"/>
+    <student id="006" row="6" indexNo="10009306" title="Mr" name="Hansa Anuradha Wickramanayake"/>
+  </students>
+
+  <sessions>
+    <session date="2019-05-31" start="13:00" end="16:00" hall="106" image="sheet_2019-05-31.png"/>
+    <session date="2019-06-21" start="13:00" end="16:00" hall="106" image="sheet_2019-06-21.png"/>
+    <session date="2019-06-28" start="13:00" end="16:00" hall="106" image="sheet_2019-06-28.png"/>
+    <session date="2019-07-05" start="13:00" end="16:00" hall="104" image="sheet_2019-07-05.png"/>
+    <session date="2019-07-12" start="13:00" end="16:00" hall="103" image="sheet_2019-07-12.png"/>
+  </sessions>
+
+</signingSheet>

@@ -1,0 +1,31 @@
+# Byte-compiled / cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Regenerated pipeline output -- rebuilt by running src/m1_alignment.py
+# through src/m7_investigate.py; committing it would just be derived-data
+# noise that goes stale the moment anyone re-runs the pipeline.
+data/output/
+
+# Regenerated database -- rebuilt by src/m6_database.py
+data/attendance.db
+
+# Bootstrapped genuine-signature templates (src/m7_investigate.py creates
+# these on first run from each student's earliest signed session).
+data/genuine_signatures/*.png
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.claude/
+
+# Streamlit local runtime state
+.streamlit/
