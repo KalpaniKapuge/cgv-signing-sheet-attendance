@@ -31,10 +31,17 @@ def make_figure():
     g = _data.per_session(df).sort_values("date")
     x = g["date"].dt.strftime("%d %b").tolist()
     y = g["pct"].tolist()
+    mean_pct = sum(y) / len(y)
 
     fig, ax = plt.subplots(figsize=(8, 4.5))
     ax.plot(x, y, marker="o", ms=8, lw=2.5, color=LINE_COLOR, zorder=3)
     ax.fill_between(range(len(x)), y, alpha=0.12, color=LINE_COLOR, zorder=1)
+    for xi, yi in zip(range(len(x)), y):
+        ax.annotate(f"{yi:.0f}%", (xi, yi), textcoords="offset points",
+                    xytext=(0, 10), ha="center", fontsize=9, color="#111")
+    ax.axhline(mean_pct, ls="--", lw=1, color="#6b7280", zorder=2)
+    ax.text(len(x) - 1, mean_pct + 1.5, f"mean {mean_pct:.0f}%",
+            ha="right", fontsize=8, color="#6b7280")
 
     ax.set_ylim(0, 112)
     ax.set_ylabel("Attendance (%)")
