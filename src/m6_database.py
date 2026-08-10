@@ -18,7 +18,7 @@ table operation; callers never write raw SQL.
 import os
 import sqlite3
 import sys
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 for _p in (_ROOT, os.path.join(_ROOT, "src", "common")):
@@ -26,6 +26,7 @@ for _p in (_ROOT, os.path.join(_ROOT, "src", "common")):
         sys.path.insert(0, _p)
 
 import config          # noqa: E402
+import m5_mapping      # noqa: E402
 
 
 _SCHEMA = """
@@ -124,7 +125,69 @@ class Database:
             (date, student_id, int(present), ink_colour, int(forged)),
         )
 
+    # --- reads ---------------------------------------------------------------
+    def fetch_subject(self) -> Optional[Dict]:
+        cur = self._conn.execute("SELECT * FROM Subject_Info LIMIT 1")
+        row = cur.fetchone()
+        if row is None:
+            return None
+        cols = [c[0] for c in cur.description]
+        return dict(zip(cols, row))
+
+    def fetch_students(self) -> List[Dict]:
+        cur = self._conn.execute("SELECT * FROM Students ORDER BY student_id")
+        cols = [c[0] for c in cur.description]
+        return [dict(zip(cols, r)) for r in cur.fetchall()]
+
+    def fetch_attendance(self) -> List[Dict]:
+        cur = self._conn.execute(
+            "SELECT * FROM Attendance ORDER BY date, student_id")
+        cols = [c[0] for c in cur.description]
+        return [dict(zip(cols, r)) for r in cur.fetchall()]
+
+    def counts(self) -> Dict[str, int]:
+        c = self._conn
+        return {
+            "subjects": c.execute("SELECT COUNT(*) FROM Subject_Info").fetchone()[0],
+            "students": c.execute("SELECT COUNT(*) FROM Students").fetchone()[0],
+            "attendance_rows": c.execute("SELECT COUNT(*) FROM Attendance").fetchone()[0],
+        }
+
+
+# --------------------------------------------------------------------------- #
+# Populate from the real pipeline (Member 5's mapping)
+# --------------------------------------------------------------------------- #
+def populate_database(path=None) -> Dict[str, int]:
+    """
+    Fill (or refresh) the database from info.xml + the real M1-M4 pipeline
+    output, via src/m5_mapping.py. Sessions Member 2 hasn't cropped yet are
+    skipped (m5_mapping reports present=None for those) rather than writing
+    a meaningless row -- run src/m1_alignment.py and src/m2_crop.py first if
+    a sheet is missing from the count. Returns the row counts written.
+    """
+    subject, students, _ = m5_mapping.load_info()
+    rows = m5_mapping.build_all()
+
+    with Database(path) as db:
+        db.upsert_subject(subject)
+        for student in students:
+            db.upsert_student(student)
+
+        skipped = 0
+        for r in rows:
+            if r["present"] is None:
+                skipped += 1
+                continue
+            db.upsert_attendance(r["date"], r["student_id"], r["present"],
+                                  r["ink_colour"], forged=0)
+
+        counts = db.counts()
+
+    print(f"[M6] Subject_Info: {counts['subjects']}  Students: {counts['students']}  "
+          f"Attendance: {counts['attendance_rows']} rows"
+          + (f"  ({skipped} not-yet-processed sessions skipped)" if skipped else ""))
+    return counts
+
 
 if __name__ == "__main__":
-    with Database() as db:
-        print(f"[M6] schema ready at {db.path}")
+    populate_database()
