@@ -18,7 +18,7 @@ table operation; callers never write raw SQL.
 import os
 import sqlite3
 import sys
-from typing import Optional
+from typing import Dict, Optional
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 for _p in (_ROOT, os.path.join(_ROOT, "src", "common")):
@@ -90,6 +90,39 @@ class Database:
         if exc_type is None:
             self._conn.commit()
         self.close()
+
+    # --- writes (all upserts -> idempotent) --------------------------------
+    def upsert_subject(self, subject: Dict):
+        self._conn.execute(
+            """INSERT INTO Subject_Info (code, name, programme, faculty, university, lecturer)
+               VALUES (:code, :name, :programme, :faculty, :university, :lecturer)
+               ON CONFLICT(code) DO UPDATE SET
+                   name=excluded.name, programme=excluded.programme,
+                   faculty=excluded.faculty, university=excluded.university,
+                   lecturer=excluded.lecturer""",
+            subject,
+        )
+
+    def upsert_student(self, student: Dict):
+        self._conn.execute(
+            """INSERT INTO Students (student_id, index_no, name, title, row)
+               VALUES (:id, :indexNo, :name, :title, :row)
+               ON CONFLICT(student_id) DO UPDATE SET
+                   index_no=excluded.index_no, name=excluded.name,
+                   title=excluded.title, row=excluded.row""",
+            student,
+        )
+
+    def upsert_attendance(self, date: str, student_id: str, present: bool,
+                           ink_colour: Optional[str], forged: int = 0):
+        self._conn.execute(
+            """INSERT INTO Attendance (date, student_id, present, ink_colour, forged)
+               VALUES (?, ?, ?, ?, ?)
+               ON CONFLICT(date, student_id) DO UPDATE SET
+                   present=excluded.present, ink_colour=excluded.ink_colour,
+                   forged=excluded.forged""",
+            (date, student_id, int(present), ink_colour, int(forged)),
+        )
 
 
 if __name__ == "__main__":
