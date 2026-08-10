@@ -24,3 +24,26 @@ def detect_file(crop_path) -> Tuple[bool, str]:
     return detect_presence(io_utils.load_bgr(crop_path))
 
 
+def detect_all():
+    crops_root = config.OUTPUT_DIR / "crops"
+    if not crops_root.exists():
+        print("No crops. Run: python src/m2_crop.py first.")
+        return {}
+
+    results = {}
+    for sheet_dir in sorted(p for p in crops_root.iterdir() if p.is_dir()):
+        rows = []
+        for row in range(1, 7):
+            f = sheet_dir / f"row_{row}.png"
+            if not f.exists():
+                continue
+            present, reason = detect_file(f)
+            results[(sheet_dir.name, row)] = (present, reason)
+            mark = "P" if present else "A"
+            rows.append(f"{row}:{mark}({reason})")
+        print(f"[M4] {sheet_dir.name:24s} {'  '.join(rows)}")
+    return results
+
+
+if __name__ == "__main__":
+    detect_all()
