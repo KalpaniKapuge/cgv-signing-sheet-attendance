@@ -62,3 +62,36 @@ with tab_overview:
 
     st.subheader("Attendance Heatmap")
     st.pyplot(m4_heatmap.make_figure(), clear_figure=True)
+
+    # --------------------------------------------------------------------------- #
+    # Student Lookup: per-student charts (Members 5, 7), one shared selector
+    # --------------------------------------------------------------------------- #
+    with tab_student:
+    _, students, _ = m5_mapping.load_info()
+    options = {f"{s['id']}  -  {s['name']}": s["id"]
+               for s in sorted(students, key=lambda s: s["id"])}
+    picked = st.selectbox("Student", list(options.keys()))
+    student_id = options[picked]
+
+    col_left, col_right = st.columns(2)
+    with col_left:
+        st.subheader("Overall Attendance")
+        # theme=None: st.plotly_chart's default "streamlit" theme re-colours
+        # the figure's text to match Streamlit's active theme (light grey in
+        # dark mode), which clashes with the gauge's own explicit white
+        # background from infovis.py and reads as washed-out/illegible.
+        # theme=None keeps the figure's own colours as designed.
+        st.plotly_chart(infovis.make_figure(student_id), width="stretch", theme=None)
+    with col_right:
+        st.subheader("Signature Match Confidence")
+        try:
+            st.pyplot(investigate.make_figure(student_id), clear_figure=True)
+        except ValueError as e:
+            st.info(str(e))
+
+    st.divider()
+    st.caption(
+    "Image-processing live preview (Grayscale -> Otsu -> Morphology) opens "
+    "as its own OpenCV window, not a web widget -- run it separately:  "
+    "python src/m8_preview.py [student_id] [date]"
+    )
