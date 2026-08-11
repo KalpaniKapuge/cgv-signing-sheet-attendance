@@ -10,9 +10,9 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 for _p in (_HERE, os.path.dirname(_HERE)):
     if _p not in sys.path:
         sys.path.insert(0, _p)
-   
-import _data      
 
+import config     
+import _data      
 
 PRESENT_COLOUR = "#0ca30c"
 ABSENT_COLOUR = "#d03b3b"
@@ -21,7 +21,6 @@ ABSENT_COLOUR = "#d03b3b"
 def make_figure():
     df = _data.load_attendance()
     pivot = df.pivot(index="name", columns="date", values="present")
-    order = df.drop_duplicates("name").sort_values("student_id")["name"]
     pivot = pivot.loc[order]
 
     dates = pivot.columns
@@ -41,7 +40,6 @@ def make_figure():
     ax.set_yticks(range(len(students)))
     ax.set_yticklabels(students, fontsize=9)
 
- 
     pct_per_day = (pivot.sum(axis=0) / pivot.shape[0] * 100).round(0).astype(int)
     ax.set_xticks(range(len(dates)))
     ax.set_xticklabels([f"{pct}%\n{d.strftime('%d %b')}"
@@ -67,3 +65,14 @@ def make_figure():
     return fig
 
 
+def main():
+    out = config.OUTPUT_DIR / "charts" / "m4_heatmap.png"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    fig = make_figure()
+    fig.savefig(out, dpi=130)
+    plt.close(fig)
+    print(f"[M4] heatmap -> {out}")
+
+
+if __name__ == "__main__":
+    main()
