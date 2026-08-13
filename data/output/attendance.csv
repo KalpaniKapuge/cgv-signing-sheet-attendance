@@ -1,0 +1,31 @@
+date,student_id,index_no,name,present,ink_colour,forged
+2019-05-31,001,10000409,"M S Dilshanika Perera",1,Blue,0
+2019-05-31,002,10009301,"C W M A Shehan Abeyrathne",1,Blue,0
+2019-05-31,003,10009302,"B A K M Chithrananda",1,Black,0
+2019-05-31,004,10009303,"W Shashini Minosha De Silva",1,Blue,0
+2019-05-31,005,10009304,"K L Udara Maduranga Liyanage",1,Green,0
+2019-05-31,006,10009306,"Hansa Anuradha Wickramanayake",1,Black,0
+2019-06-21,001,10000409,"M S Dilshanika Perera",1,Blue,0
+2019-06-21,002,10009301,"C W M A Shehan Abeyrathne",1,Blue,0
+2019-06-21,003,10009302,"B A K M Chithrananda",1,Black,0
+2019-06-21,004,10009303,"W Shashini Minosha De Silva",1,Blue,0
+2019-06-21,005,10009304,"K L Udara Maduranga Liyanage",1,Green,0
+2019-06-21,006,10009306,"Hansa Anuradha Wickramanayake",0,,0
+2019-06-28,001,10000409,"M S Dilshanika Perera",1,Blue,0
+2019-06-28,002,10009301,"C W M A Shehan Abeyrathne",0,,0
+2019-06-28,003,10009302,"B A K M Chithrananda",0,,0
+2019-06-28,004,10009303,"W Shashini Minosha De Silva",1,Blue,0
+2019-06-28,005,10009304,"K L Udara Maduranga Liyanage",1,Green,0
+2019-06-28,006,10009306,"Hansa Anuradha Wickramanayake",1,Black,0
+2019-07-05,001,10000409,"M S Dilshanika Perera",1,Blue,0
+2019-07-05,002,10009301,"C W M A Shehan Abeyrathne",0,,0
+2019-07-05,003,10009302,"B A K M Chithrananda",1,Black,0
+2019-07-05,004,10009303,"W Shashini Minosha De Silva",0,,0
+2019-07-05,005,10009304,"K L Udara Maduranga Liyanage",1,Green,0
+2019-07-05,006,10009306,"Hansa Anuradha Wickramanayake",1,Black,0
+2019-07-12,001,10000409,"M S Dilshanika Perera",1,Blue,0
+2019-07-12,002,10009301,"C W M A Shehan Abeyrathne",1,Blue,0
+2019-07-12,003,10009302,"B A K M Chithrananda",1,Black,1
+2019-07-12,004,10009303,"W Shashini Minosha De Silva",1,Blue,0
+2019-07-12,005,10009304,"K L Udara Maduranga Liyanage",1,Green,0
+2019-07-12,006,10009306,"Hansa Anuradha Wickramanayake",1,Black,0

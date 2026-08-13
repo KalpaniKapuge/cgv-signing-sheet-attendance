@@ -8,10 +8,7 @@ venv/
 .venv/
 env/
 
-# Regenerated pipeline output -- rebuilt by running src/m1_alignment.py
-# through src/m7_investigate.py; committing it would just be derived-data
-# noise that goes stale the moment anyone re-runs the pipeline.
-data/output/
+
 
 # Regenerated database -- rebuilt by src/m6_database.py
 data/attendance.db
