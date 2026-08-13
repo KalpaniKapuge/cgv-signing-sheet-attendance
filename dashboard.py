@@ -1,4 +1,5 @@
-"""(Member 8 - Data Visualization Dashboard)
+"""
+dashboard.py   (Member 8 - Data Visualization Dashboard)
 ==========================================================
 Main UI: one Streamlit page integrating every chart the other members
 built, reusing each one's own make_figure() rather than re-implementing any
@@ -11,13 +12,18 @@ plotting logic here.
 Run:
     streamlit run dashboard.py
 
+(Member 8's OTHER deliverable, the live OpenCV preprocessing preview
+(src/m8_preview.py), is a separate native window, not a web widget -- it
+can't be embedded in a browser page the way these figures can, so it's
+launched as its own script; this dashboard links to it for reference.)
 """
+
 import os
 import sys
 
 import streamlit as st
 
-ROOT = os.path.dirname(os.path.abspath(file_))
+_ROOT = os.path.dirname(os.path.abspath(__file__))
 for _p in (_ROOT, os.path.join(_ROOT, "viz"), os.path.join(_ROOT, "src"),
            os.path.join(_ROOT, "src", "common")):
     if _p not in sys.path:
@@ -63,10 +69,10 @@ with tab_overview:
     st.subheader("Attendance Heatmap")
     st.pyplot(m4_heatmap.make_figure(), clear_figure=True)
 
-    # --------------------------------------------------------------------------- #
-    # Student Lookup: per-student charts (Members 5, 7), one shared selector
-    # --------------------------------------------------------------------------- #
-    with tab_student:
+# --------------------------------------------------------------------------- #
+# Student Lookup: per-student charts (Members 5, 7), one shared selector
+# --------------------------------------------------------------------------- #
+with tab_student:
     _, students, _ = m5_mapping.load_info()
     options = {f"{s['id']}  -  {s['name']}": s["id"]
                for s in sorted(students, key=lambda s: s["id"])}
@@ -89,9 +95,9 @@ with tab_overview:
         except ValueError as e:
             st.info(str(e))
 
-    st.divider()
-    st.caption(
+st.divider()
+st.caption(
     "Image-processing live preview (Grayscale -> Otsu -> Morphology) opens "
     "as its own OpenCV window, not a web widget -- run it separately:  "
-    "python src/m8_preview.py [student_id] [date]"
-    )
+    "`python src/m8_preview.py [student_id] [date]`"
+)
